@@ -1,0 +1,1056 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ChatterWaste - Your Friendly Procrastination Planner</title>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Fredoka', cursive;
+            background: linear-gradient(135deg, #ffeef8 0%, #f0f8ff 50%, #f5f0ff 100%);
+            min-height: 100vh;
+            padding: 20px;
+            position: relative;
+            overflow-x: hidden;
+        }
+        
+        .floating-text {
+            position: fixed;
+            font-size: 12px;
+            color: #b19cd9;
+            opacity: 0.7;
+            z-index: 1;
+            pointer-events: none;
+            animation: float 6s ease-in-out infinite;
+        }
+        
+        .floating-text.top-left {
+            top: 20px;
+            left: 20px;
+        }
+        
+        .floating-text.top-right {
+            top: 20px;
+            right: 20px;
+        }
+        
+        .floating-text.bottom-left {
+            bottom: 20px;
+            left: 20px;
+        }
+        
+        .floating-text.bottom-right {
+            bottom: 20px;
+            right: 20px;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        
+        .title {
+            font-size: 3.5rem;
+            font-weight: 600;
+            background: linear-gradient(45deg, #ff9a9e, #a8e6cf, #dda0dd);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 10px;
+            animation: titleBounce 2s ease-in-out infinite;
+        }
+        
+        .subtitle {
+            font-size: 1.2rem;
+            color: #8b7d9b;
+            font-weight: 400;
+        }
+        
+        @keyframes titleBounce {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+        
+        .main-card {
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 30px;
+            padding: 40px;
+            box-shadow: 
+                20px 20px 40px rgba(174, 174, 192, 0.2),
+                -20px -20px 40px rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            margin-bottom: 30px;
+        }
+        
+        .task-input-section {
+            margin-bottom: 30px;
+        }
+        
+        .input-group {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+        
+        .task-input {
+            flex: 1;
+            min-width: 250px;
+            padding: 15px 20px;
+            border: none;
+            border-radius: 20px;
+            background: linear-gradient(145deg, #f0f8ff, #ffeef8);
+            box-shadow: 
+                inset 8px 8px 16px rgba(174, 174, 192, 0.2),
+                inset -8px -8px 16px rgba(255, 255, 255, 0.9);
+            font-family: 'Fredoka', cursive;
+            font-size: 16px;
+            color: #666;
+            transition: all 0.3s ease;
+        }
+        
+        .task-input:focus {
+            outline: none;
+            transform: scale(1.02);
+            box-shadow: 
+                inset 5px 5px 10px rgba(174, 174, 192, 0.3),
+                inset -5px -5px 10px rgba(255, 255, 255, 0.9);
+        }
+        
+        .btn {
+            padding: 15px 25px;
+            border: none;
+            border-radius: 20px;
+            font-family: 'Fredoka', cursive;
+            font-weight: 500;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(145deg, #ffb6c1, #dda0dd);
+            color: white;
+            box-shadow: 8px 8px 16px rgba(174, 174, 192, 0.3);
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 12px 12px 20px rgba(174, 174, 192, 0.4);
+        }
+        
+        .btn-secondary {
+            background: linear-gradient(145deg, #a8e6cf, #87ceeb);
+            color: white;
+            margin: 5px;
+        }
+        
+        .btn-secondary:hover {
+            transform: translateY(-2px) scale(1.05);
+        }
+        
+        .btn-chaos {
+            background: linear-gradient(145deg, #ffa07a, #ff9a9e);
+            color: white;
+        }
+        
+        .btn-chaos:hover {
+            transform: translateY(-2px) rotate(2deg);
+        }
+        
+        .actions-row {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-bottom: 30px;
+        }
+        
+        .task-list {
+            min-height: 200px;
+        }
+        
+        .task-item {
+            background: linear-gradient(145deg, rgba(255, 245, 238, 0.8), rgba(240, 248, 255, 0.8));
+            border-radius: 20px;
+            padding: 20px;
+            margin-bottom: 15px;
+            box-shadow: 
+                8px 8px 16px rgba(174, 174, 192, 0.15),
+                -8px -8px 16px rgba(255, 255, 255, 0.9);
+            animation: slideIn 0.5s ease-out;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .task-item.delayed {
+            opacity: 0.5;
+            background: linear-gradient(145deg, rgba(200, 200, 200, 0.3), rgba(220, 220, 220, 0.3));
+        }
+        
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateX(-50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+        
+        .task-text {
+            font-size: 18px;
+            color: #666;
+            margin-bottom: 5px;
+        }
+        
+        .task-status {
+            font-size: 14px;
+            color: #b19cd9;
+            font-style: italic;
+        }
+        
+        .popup {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0);
+            background: linear-gradient(145deg, rgba(255, 255, 255, 0.95), rgba(248, 248, 255, 0.95));
+            border-radius: 25px;
+            padding: 30px;
+            box-shadow: 
+                0 20px 40px rgba(0, 0, 0, 0.2),
+                0 0 100px rgba(174, 174, 192, 0.3);
+            z-index: 1000;
+            backdrop-filter: blur(20px);
+            max-width: 400px;
+            text-align: center;
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+        
+        .popup.show {
+            transform: translate(-50%, -50%) scale(1);
+        }
+        
+        .popup-emoji {
+            font-size: 3rem;
+            margin-bottom: 15px;
+            animation: bounce 1s ease-in-out infinite;
+        }
+        
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-15px); }
+        }
+        
+        .popup-text {
+            font-size: 1.3rem;
+            color: #666;
+            margin-bottom: 20px;
+            font-weight: 500;
+        }
+        
+        .popup-close {
+            background: linear-gradient(145deg, #ff9a9e, #ffa07a);
+            color: white;
+        }
+        
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.3);
+            z-index: 999;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+        
+        .overlay.show {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .empty-state {
+            text-align: center;
+            padding: 40px;
+            color: #b19cd9;
+        }
+        
+        .empty-emoji {
+            font-size: 4rem;
+            margin-bottom: 20px;
+            opacity: 0.7;
+        }
+        
+        .typing-indicator {
+            display: none;
+            padding: 15px;
+            text-align: center;
+            color: #b19cd9;
+        }
+        
+        .typing-dots {
+            display: inline-block;
+            animation: typing 1.5s infinite;
+        }
+        
+        @keyframes typing {
+            0%, 60%, 100% { opacity: 0; }
+            30% { opacity: 1; }
+        }
+        
+        @media (max-width: 768px) {
+            .title {
+                font-size: 2.5rem;
+            }
+            
+            .main-card {
+                padding: 25px;
+                margin: 10px;
+            }
+            
+            .input-group {
+                flex-direction: column;
+            }
+            
+            .task-input {
+                min-width: auto;
+            }
+            
+            .actions-row {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .btn {
+                width: 100%;
+                max-width: 250px;
+            }
+            
+            .feature-row {
+                flex-direction: column;
+            }
+        }
+        
+        /* New Feature Styles */
+        .features-section {
+            margin-top: 30px;
+        }
+        
+        .feature-card {
+            background: rgba(255, 255, 255, 0.7);
+            border-radius: 25px;
+            padding: 25px;
+            margin-bottom: 20px;
+            box-shadow: 
+                15px 15px 30px rgba(174, 174, 192, 0.15),
+                -15px -15px 30px rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(5px);
+        }
+        
+        .feature-card h3 {
+            color: #8b7d9b;
+            margin-bottom: 15px;
+            text-align: center;
+            font-size: 1.3rem;
+        }
+        
+        .feature-card h4 {
+            color: #8b7d9b;
+            margin-bottom: 10px;
+            text-align: center;
+            font-size: 1.1rem;
+        }
+        
+        .feature-row {
+            display: flex;
+            gap: 20px;
+        }
+        
+        .feature-card.small {
+            flex: 1;
+            text-align: center;
+        }
+        
+        .score-display {
+            text-align: center;
+        }
+        
+        .score-number {
+            font-size: 3rem;
+            font-weight: 600;
+            background: linear-gradient(45deg, #ff9a9e, #a8e6cf);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .score-label {
+            color: #b19cd9;
+            font-size: 1.1rem;
+            margin-top: 5px;
+        }
+        
+        .btn-dream {
+            background: linear-gradient(145deg, #d8bfd8, #b8a9dc);
+            color: white;
+            width: 100%;
+            margin-bottom: 10px;
+        }
+        
+        .dream-status {
+            font-size: 0.9rem;
+            color: #b19cd9;
+            font-style: italic;
+        }
+        
+        .chaos-meter {
+            width: 100%;
+            height: 20px;
+            background: rgba(200, 200, 200, 0.3);
+            border-radius: 10px;
+            overflow: hidden;
+            margin-bottom: 10px;
+        }
+        
+        .chaos-bar {
+            height: 100%;
+            background: linear-gradient(90deg, #a8e6cf, #ffb6c1, #ff9a9e);
+            border-radius: 10px;
+            width: 60%;
+            transition: width 0.5s ease;
+        }
+        
+        .chaos-label {
+            text-align: center;
+            color: #b19cd9;
+            font-size: 0.9rem;
+        }
+        
+        .calendar-display {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        
+        .calendar-day {
+            background: linear-gradient(145deg, rgba(255, 245, 238, 0.6), rgba(240, 248, 255, 0.6));
+            padding: 15px;
+            border-radius: 15px;
+            text-align: center;
+            color: #666;
+            transition: all 0.3s ease;
+        }
+        
+        .calendar-day.active {
+            background: linear-gradient(145deg, #ffb6c1, #dda0dd);
+            color: white;
+            transform: scale(1.02);
+        }
+        
+        .distraction-buttons {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+        }
+        
+        .btn-distraction {
+            background: linear-gradient(145deg, #ffeaa7, #fab1a0);
+            color: white;
+            font-size: 14px;
+            padding: 12px 15px;
+        }
+        
+        .btn-distraction:hover {
+            transform: translateY(-2px) rotate(-1deg);
+        }
+        
+        .achievement-popup {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: linear-gradient(145deg, rgba(255, 255, 255, 0.95), rgba(248, 248, 255, 0.95));
+            border-radius: 20px;
+            padding: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            z-index: 1001;
+            transform: translateX(400px);
+            transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+            max-width: 250px;
+            text-align: center;
+            backdrop-filter: blur(10px);
+        }
+        
+        .achievement-popup.show {
+            transform: translateX(0);
+        }
+        
+        .achievement-icon {
+            font-size: 2rem;
+            margin-bottom: 10px;
+        }
+        
+        .achievement-text {
+            font-weight: 600;
+            color: #8b7d9b;
+            margin-bottom: 5px;
+        }
+        
+        .achievement-desc {
+            font-size: 0.9rem;
+            color: #b19cd9;
+        }
+        
+        .timer-display {
+            font-size: 2rem;
+            text-align: center;
+            color: #8b7d9b;
+            margin: 15px 0;
+            font-weight: 600;
+        }
+        
+        .dream-mode {
+            filter: blur(1px) brightness(0.8);
+            transition: all 0.5s ease;
+        }
+        
+        .floating-emoji {
+            position: fixed;
+            font-size: 2rem;
+            pointer-events: none;
+            z-index: 100;
+            animation: floatAway 3s ease-out forwards;
+        }
+        
+        @keyframes floatAway {
+            0% {
+                opacity: 1;
+                transform: translateY(0) rotate(0deg);
+            }
+            100% {
+                opacity: 0;
+                transform: translateY(-100px) rotate(360deg);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="floating-text top-left">Still not doing that thing, huh? 🤔</div>
+    <div class="floating-text top-right">You've been staring for 5 minutes. That counts! ⏰</div>
+    <div class="floating-text bottom-left">Procrastination level: Expert 🏆</div>
+    <div class="floating-text bottom-right">Tomorrow is another day... 🌅</div>
+    
+    <div class="container">
+        <div class="header">
+            <h1 class="title">ChatterWaste</h1>
+            <p class="subtitle">Your friendly procrastination planner ✨</p>
+        </div>
+        
+        <div class="main-card">
+            <div class="task-input-section">
+                <div class="input-group">
+                    <input type="text" class="task-input" placeholder="What are you definitely not going to do today?" id="taskInput">
+                    <button class="btn btn-primary" onclick="addTask()">Add Task</button>
+                </div>
+                
+                <div class="actions-row">
+                    <button class="btn btn-secondary" onclick="vibeCheck()">Vibe Check 🌙</button>
+                    <button class="btn btn-chaos" onclick="delayEverything()">Delay Everything</button>
+                    <button class="btn btn-secondary" onclick="motivationalLie()">Motivational Lie</button>
+                    <button class="btn btn-secondary" onclick="excuseGenerator()">Excuse Me 🎭</button>
+                    <button class="btn btn-chaos" onclick="shuffleTasks()">Chaos Shuffle</button>
+                    <button class="btn btn-secondary" onclick="procrastinationTimer()">Focus Timer 😴</button>
+                </div>
+            </div>
+            
+            <div class="typing-indicator" id="typingIndicator">
+                <span class="typing-dots">ChatterWaste is thinking...</span>
+            </div>
+            
+            <div class="task-list" id="taskList">
+                <div class="empty-state">
+                    <div class="empty-emoji">🎭</div>
+                    <p>Your beautiful void of productivity awaits...</p>
+                </div>
+            </div>
+            
+            <!-- New Features Section -->
+            <div class="features-section">
+                <div class="feature-card">
+                    <h3>🎯 Productivity Score</h3>
+                    <div class="score-display">
+                        <div class="score-number" id="productivityScore">-42</div>
+                        <div class="score-label">Beautifully Unproductive</div>
+                    </div>
+                </div>
+                
+                <div class="feature-row">
+                    <div class="feature-card small">
+                        <h4>🌙 Dream Mode</h4>
+                        <button class="btn btn-dream" onclick="toggleDreamMode()">Activate Zen</button>
+                        <div class="dream-status" id="dreamStatus">Ready to drift...</div>
+                    </div>
+                    
+                    <div class="feature-card small">
+                        <h4>🎲 Chaos Level</h4>
+                        <div class="chaos-meter">
+                            <div class="chaos-bar" id="chaosBar"></div>
+                        </div>
+                        <div class="chaos-label" id="chaosLabel">Mild Mayhem</div>
+                    </div>
+                </div>
+                
+                <div class="feature-card">
+                    <h3>📅 Fake Calendar</h3>
+                    <div class="calendar-display" id="fakeCalendar">
+                        <div class="calendar-day active">Today: Perfect for Nothing</div>
+                        <div class="calendar-day">Tomorrow: Also Booked</div>
+                        <div class="calendar-day">Next Week: Mysteriously Full</div>
+                    </div>
+                </div>
+                
+                <div class="feature-card">
+                    <h3>🎪 Distraction Generator</h3>
+                    <div class="distraction-buttons">
+                        <button class="btn btn-distraction" onclick="generateDistraction('social')">Social Media Break</button>
+                        <button class="btn btn-distraction" onclick="generateDistraction('snack')">Snack Quest</button>
+                        <button class="btn btn-distraction" onclick="generateDistraction('cleaning')">Sudden Cleaning Urge</button>
+                        <button class="btn btn-distraction" onclick="generateDistraction('research')">Wikipedia Rabbit Hole</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Achievement Popup -->
+        <div class="achievement-popup" id="achievementPopup">
+            <div class="achievement-icon">🏆</div>
+            <div class="achievement-text" id="achievementText">Achievement Unlocked!</div>
+            <div class="achievement-desc" id="achievementDesc">Master Procrastinator</div>
+        </div>
+    </div>
+    
+    <div class="overlay" id="overlay" onclick="closePopup()"></div>
+    <div class="popup" id="popup">
+        <div class="popup-emoji" id="popupEmoji">😴</div>
+        <div class="popup-text" id="popupText">That can wait. Like everything else.</div>
+        <button class="btn popup-close" onclick="closePopup()">Embrace the Chaos</button>
+    </div>
+
+    <script>
+        let tasks = [];
+        let isDelayedMode = false;
+        let isDreamMode = false;
+        let chaosLevel = 60;
+        let productivityScore = -42;
+        let achievements = [];
+        let focusTimer = null;
+        let timerSeconds = 0;
+        
+        const sarcastic_responses = [
+            { emoji: "😴", text: "Task added... to the abyss." },
+            { emoji: "🙃", text: "That can wait. Like everything else." },
+            { emoji: "✨", text: "Nice try, but do it tomorrow." },
+            { emoji: "🎭", text: "Bold of you to assume you'll do this." },
+            { emoji: "🌙", text: "The universe says: 'Maybe later.'" },
+            { emoji: "🦥", text: "Even sloths think you're too slow." },
+            { emoji: "🎪", text: "Welcome to the circus of procrastination!" },
+            { emoji: "🍃", text: "Poof! It's gone... like your motivation." },
+            { emoji: "🎯", text: "Take your fish out for a walk." }
+            
+        ];
+        
+        const vibe_responses = [
+            { emoji: "🌈", text: "Your vibe is: Chaotically Zen" },
+            { emoji: "🦄", text: "Mood detected: Fantastically Unfocused" },
+            { emoji: "🎨", text: "Energy level: Creative Avoidance" },
+            { emoji: "🌸", text: "Status: Beautifully Overwhelmed" },
+            { emoji: "🍂", text: "Vibe: Autumn Leaf in the Wind" },
+            { emoji: "🎭", text: "Current state: Dramatically Unbothered" }
+        ];
+        
+        const motivational_lies = [
+            { emoji: "💪", text: "You're totally going to start... someday!" },
+            { emoji: "🌟", text: "This time will be different! (It won't.)" },
+            { emoji: "🚀", text: "You're just warming up for greatness!" },
+            { emoji: "🎯", text: "Procrastination is just strategic waiting!" },
+            { emoji: "💎", text: "You work better under pressure... right?" },
+            { emoji: "🌙", text: "Night owl productivity incoming! (Maybe.)" }
+        ];
+        
+        const excuses = [
+            { emoji: "☕", text: "I need coffee first... and second... and third..." },
+            { emoji: "🌧", text: "It's raining. Productivity is cancelled." },
+            { emoji: "📱", text: "My phone died. Clearly a sign from the universe." },
+            { emoji: "🐱", text: "My cat looked at me funny. Day ruined." },
+            { emoji: "🌙", text: "Mercury is in retrograde. Nothing will work anyway." },
+            { emoji: "🍕", text: "I can't work on an empty stomach... or a full one." },
+            { emoji: "🧘", text: "I'm manifesting the energy to care." },
+            { emoji: "🎭", text: "I'm too emotionally invested in this Netflix show." }
+        ];
+        
+        const distractions = {
+            social: [
+                "Time to check if anyone liked your post from 3 days ago",
+                "Someone's cousin's wedding photos won't scroll through themselves",
+                "You need to see what your ex from high school had for lunch"
+            ],
+            snack: [
+                "The kitchen is calling... it sounds urgent",
+                "You can't work without the perfect snack combination",
+                "That leftover pizza is probably lonely"
+            ],
+
+
+            
+            cleaning: [
+                "Your desk suddenly looks absolutely filthy",
+                "Time to reorganize your entire life... starting with that drawer",
+                "The floor won't vacuum itself (unfortunately)"
+            ],
+            research: [
+                "You need to know everything about medieval trebuchets. Right now.",
+                "Time to learn the complete history of bubble wrap",
+                "How DO they get the figs into Fig Newtons anyway?"
+            ]
+        };
+        
+        const achievementsList = [
+            { id: 'first_task', title: 'First Victim', desc: 'Added your first task to the void' },
+            { id: 'chaos_master', title: 'Chaos Master', desc: 'Shuffled tasks 5 times' },
+            { id: 'excuse_artist', title: 'Excuse Artist', desc: 'Generated 10 creative excuses' },
+            { id: 'dream_walker', title: 'Dream Walker', desc: 'Activated Dream Mode' },
+            { id: 'procrastination_pro', title: 'Procrastination Pro', desc: 'Delayed everything multiple times' },
+            { id: 'distraction_seeker', title: 'Distraction Seeker', desc: 'Found all types of distractions' }
+        ];
+        
+        function addTask() {
+            const input = document.getElementById('taskInput');
+            const taskText = input.value.trim();
+            
+            if (!taskText) {
+                showPopup("🤷", "Can't procrastinate on nothing, genius!");
+                return;
+            }
+            
+            
+            // Show typing indicator
+            document.getElementById('typingIndicator').style.display = 'block';
+            
+            setTimeout(() => {
+                document.getElementById('typingIndicator').style.display = 'none';
+                
+                const task = {
+                    id: Date.now(),
+                    text: taskText,
+                    status: "Postponed to tomorrow",
+                    delayed: isDelayedMode
+                };
+                
+                tasks.unshift(task);
+                input.value = '';
+                renderTasks();
+                updateProductivityScore();
+                increaseChaos(10);
+                
+                // Check for first task achievement
+                if (tasks.length === 1) {
+                    unlockAchievement('first_task');
+                }
+                
+                const response = sarcastic_responses[Math.floor(Math.random() * sarcastic_responses.length)];
+                showPopup(response.emoji, response.text);
+            }, 1500);
+        }
+        
+        function vibeCheck() {
+            const response = vibe_responses[Math.floor(Math.random() * vibe_responses.length)];
+            showPopup(response.emoji, response.text);
+        }
+        
+        function delayEverything() {
+            isDelayedMode = !isDelayedMode;
+            tasks.forEach(task => task.delayed = isDelayedMode);
+            renderTasks();
+            
+            if (isDelayedMode) {
+                showPopup("🌀", "Everything's under control — in another dimension.");
+            } else {
+                showPopup("✨", "Back to beautiful chaos!");
+            }
+        }
+        
+        function motivationalLie() {
+            const response = motivational_lies[Math.floor(Math.random() * motivational_lies.length)];
+            showPopup(response.emoji, response.text);
+        }
+        
+        // New Features
+        function excuseGenerator() {
+            const response = excuses[Math.floor(Math.random() * excuses.length)];
+            showPopup(response.emoji, response.text);
+            
+            // Track excuse generation
+            if (!window.excuseCount) window.excuseCount = 0;
+            window.excuseCount++;
+            if (window.excuseCount >= 10) {
+                unlockAchievement('excuse_artist');
+            }
+        }
+        
+        function shuffleTasks() {
+            if (tasks.length < 2) {
+                showPopup("🤷", "Need more tasks to create beautiful chaos!");
+                return;
+            }
+            
+            // Shuffle array
+            for (let i = tasks.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [tasks[i], tasks[j]] = [tasks[j], tasks[i]];
+            }
+            
+            renderTasks();
+            increaseChaos(20);
+            showPopup("🌪", "Tasks shuffled into glorious disorder!");
+            
+            // Track shuffles for achievement
+            if (!window.shuffleCount) window.shuffleCount = 0;
+            window.shuffleCount++;
+            if (window.shuffleCount >= 5) {
+                unlockAchievement('chaos_master');
+            }
+        }
+        
+        function procrastinationTimer() {
+            if (focusTimer) {
+                clearInterval(focusTimer);
+                focusTimer = null;
+                showPopup("😴", "Timer stopped. As expected.");
+                return;
+            }
+            
+            if (tasks.length === 0) {
+                showPopup("🤷", "No tasks to procrastinate on!");
+                return;
+            }
+            
+            // Show typing indicator
+            document.getElementById('typingIndicator').style.display = 'block';
+            
+            setTimeout(() => {
+                document.getElementById('typingIndicator').style.display = 'none';
+            }, 1500);
+            
+            timerSeconds = 25 * 60; // 25 minutes, but we'll make it weird
+            showPopup("⏰", "Starting 25-minute 'focus' session... good luck!");
+            
+            focusTimer = setInterval(() => {
+                timerSeconds--;
+                
+                // Random timer disruptions
+                if (Math.random() < 0.1) {
+                    timerSeconds += Math.floor(Math.random() * 30);
+                    createFloatingEmoji("⏰", Math.random() * window.innerWidth, 100);
+                }
+                
+                const minutes = Math.floor(timerSeconds / 60);
+                const seconds = timerSeconds % 60;
+                
+                if (timerSeconds <= 0) {
+                    clearInterval(focusTimer);
+                    focusTimer = null;
+                    showPopup("🎉", "Time's up! Did you actually focus? We doubt it.");
+                    return;
+                }
+                
+                // Update UI with timer (we'll add this to the popup or somewhere)
+                if (timerSeconds % 300 === 0) { // Every 5 minutes
+                    const encouragements = [
+                        "Still here? Impressive!",
+                        "The timer is more focused than you are",
+                        "5 minutes closer to giving up!",
+                        "Your attention span is legendary"
+                    ];
+                    createFloatingEmoji("⏰", Math.random() * window.innerWidth, 100);
+                }
+            }, 1000);
+        }
+        
+        function toggleDreamMode() {
+            isDreamMode = !isDreamMode;
+            const container = document.querySelector('.container');
+            
+            if (isDreamMode) {
+                container.classList.add('dream-mode');
+                document.getElementById('dreamStatus').textContent = "Drifting in the void...";
+                showPopup("🌙", "Dream mode activated. Reality is overrated anyway.");
+                unlockAchievement('dream_walker');
+            } else {
+                container.classList.remove('dream-mode');
+                document.getElementById('dreamStatus').textContent = "Ready to drift...";
+                showPopup("☀", "Back to harsh reality!");
+            }
+        }
+        
+        function generateDistraction(type) {
+            const distractionList = distractions[type];
+            const distraction = distractionList[Math.floor(Math.random() * distractionList.length)];
+            
+            showPopup("🎯", distraction);
+            increaseChaos(15);
+            
+            // Track different distraction types
+            if (!window.distractionTypes) window.distractionTypes = new Set();
+            window.distractionTypes.add(type);
+            if (window.distractionTypes.size >= 4) {
+                unlockAchievement('distraction_seeker');
+            }
+            
+            // Create floating emoji
+            const emojis = { social: "📱", snack: "🍕", cleaning: "🧹", research: "🔍" };
+            createFloatingEmoji(emojis[type], Math.random() * window.innerWidth, 100);
+        }
+        
+        function updateProductivityScore() {
+            productivityScore -= Math.floor(Math.random() * 10) + 1;
+            document.getElementById('productivityScore').textContent = productivityScore;
+            
+            const labels = [
+                "Beautifully Unproductive",
+                "Masterfully Idle",
+                "Professionally Procrastinating",
+                "Expertly Avoiding",
+                "Legendarily Lazy"
+            ];
+            
+            document.querySelector('.score-label').textContent = 
+                labels[Math.floor(Math.random() * labels.length)];
+        }
+        
+        function increaseChaos(amount) {
+            chaosLevel = Math.min(100, chaosLevel + amount);
+            document.getElementById('chaosBar').style.width = chaosLevel + '%';
+            
+            const labels = [
+                "Mild Mayhem", "Moderate Chaos", "Delightful Disorder", 
+                "Beautiful Bedlam", "Maximum Mayhem"
+            ];
+            
+            const labelIndex = Math.floor((chaosLevel / 100) * (labels.length - 1));
+            document.getElementById('chaosLabel').textContent = labels[labelIndex];
+        }
+        
+        function unlockAchievement(achievementId) {
+            if (achievements.includes(achievementId)) return;
+            
+            achievements.push(achievementId);
+            const achievement = achievementsList.find(a => a.id === achievementId);
+            
+            if (achievement) {
+                showAchievement(achievement.title, achievement.desc);
+            }
+        }
+        
+        function showAchievement(title, desc) {
+            document.getElementById('achievementText').textContent = title;
+            document.getElementById('achievementDesc').textContent = desc;
+            document.getElementById('achievementPopup').classList.add('show');
+            
+            setTimeout(() => {
+                document.getElementById('achievementPopup').classList.remove('show');
+            }, 4000);
+        }
+        
+        function createFloatingEmoji(emoji, x, y) {
+            const floatingEmoji = document.createElement('div');
+            floatingEmoji.className = 'floating-emoji';
+            floatingEmoji.textContent = emoji;
+            floatingEmoji.style.left = x + 'px';
+            floatingEmoji.style.top = y + 'px';
+            document.body.appendChild(floatingEmoji);
+            
+            setTimeout(() => {
+                if (floatingEmoji.parentNode) {
+                    floatingEmoji.parentNode.removeChild(floatingEmoji);
+                }
+            }, 3000);
+        }
+        
+        function renderTasks() {
+            const taskList = document.getElementById('taskList');
+            
+            if (tasks.length === 0) {
+                taskList.innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-emoji">🎭</div>
+                        <p>Your beautiful void of productivity awaits...</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            taskList.innerHTML = tasks.map(task => `
+                <div class="task-item ${task.delayed ? 'delayed' : ''}">
+                    <div class="task-text">${task.text}</div>
+                    <div class="task-status">${task.status}</div>
+                </div>
+            `).join('');
+        }
+        
+        function showPopup(emoji, text) {
+            document.getElementById('popupEmoji').textContent = emoji;
+            document.getElementById('popupText').textContent = text;
+            document.getElementById('overlay').classList.add('show');
+            document.getElementById('popup').classList.add('show');
+        }
+        
+        function closePopup() {
+            document.getElementById('overlay').classList.remove('show');
+            document.getElementById('popup').classList.remove('show');
+        }
+        
+        // Enter key support
+        document.getElementById('taskInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                addTask();
+            }
+        });
+        
+        // Floating text animation
+        function animateFloatingText() {
+            const texts = document.querySelectorAll('.floating-text');
+            texts.forEach((text, index) => {
+                setTimeout(() => {
+                    text.style.opacity = Math.random() > 0.5 ? '0.7' : '0.3';
+                }, index * 2000);
+            });
+        }
+        
+        setInterval(animateFloatingText, 8000);
+    </script>
+</body>
+</html>
