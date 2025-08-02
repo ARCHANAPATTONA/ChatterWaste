@@ -1,96 +1,73 @@
 <img width="3188" height="1202" alt="frame (3)" src="https://github.com/user-attachments/assets/517ad8e9-ad22-457d-9538-a9e62d137cd7" />
 
 
-# [Project Name] 🎯
+# ChatterWaste 🎯
 
 
 ## Basic Details
-### Team Name: [Name]
+### Team Name: Jam
 
 
 ### Team Members
-- Team Lead: [Name] - [College]
-- Member 2: [Name] - [College]
-- Member 3: [Name] - [College]
+- Member 1: Archana P - College of Engineering Attingal
+- Member 2: Gayathri V R - College of Engineering Attingal
+  
 
 ### Project Description
-[2-3 lines about what your project does]
+ChatterWaste is a delightfully chaotic web app that combines the bare minimum of a productivity tool with the maximum sass of a roast bot. Think of it as your personal anti-life coach — one that encourages procrastination, mocks your goals, and turns every attempt at productivity into a full-blown comedy roast. Want to add a task? Too bad. The planner will hit you with a cheeky one-liner that makes you second-guess trying in the first place. Need advice or motivation? The roast bot has your back — by stabbing it with sarcasm, existential dread, and Gen-Z humor.Designed with soothing pastel colors, quirky fonts, and a deceptively "productive" layout, ChatterWaste lures you in with calm vibes — only to sabotage your plans with roasts, distractions, and chaos. Whether you're a chronic overthinker, a professional procrastinator, or just someone who enjoys a good roast while failing to complete your to-do list, ChatterWaste turns doing nothing into an art form.
 
 ### The Problem (that doesn't exist)
-[What ridiculous problem are you solving?]
+Traditional productivity apps focus on discipline, goals, and efficiency — but they often ignore the reality of procrastination, guilt, and burnout. For many users, especially students, this creates pressure rather than motivation. There’s a lack of tools that meet people where they are: distracted, tired, and in need of a laugh.ChatterWaste addresses this gap by combining a procrastination planner with a witty roast bot that embraces unproductivity with humor and sass. Instead of pushing users to do more, it helps them feel seen, roasted, and oddly comforted — all while doing absolutely nothing.
+
+
 
 ### The Solution (that nobody asked for)
-[How are you solving it? Keep it fun!]
+To solve the 'deep-rooted' problem of being overwhelmed by productivity apps, we proudly present: ChatterWaste — a platform that does absolutely nothing helpful. Instead of organizing your tasks, it roasts your ambitions. Instead of keeping you on track, it encourages derailment with sass, sarcasm, and beautifully unmotivating one-liners.Our solution? Give users a procrastination planner that actively sabotages their planning attempts and a roast bot that offers emotional damage instead of guidance — all wrapped in soothing pastel colors to confuse the brain into thinking everything's fine. It's not efficient, it’s not productive, but it sure is a vibe.
 
 ## Technical Details
 ### Technologies/Components Used
 For Software:
-- [Languages used]
-- [Frameworks used]
-- [Libraries used]
-- [Tools used]
+- HTML,CSS,JS
+- Chatgpt, claude ai, copilot
 
-For Hardware:
-- [List main components]
-- [List specifications]
-- [List tools required]
-
-### Implementation
-For Software:
-# Installation
-[commands]
-
-# Run
-[commands]
-
-### Project Documentation
-For Software:
+##Software used 
+-VS Code
 
 # Screenshots (Add at least 3)
-![Screenshot1](Add screenshot 1 here with proper name)
-*Add caption explaining what this shows*
+![Screenshot1]
+<img width="1912" height="705" alt="Screenshot 2025-08-02 153248" src="https://github.com/user-attachments/assets/7abb1f12-61aa-409d-8493-7342d8ccb70b" />
 
-![Screenshot2](Add screenshot 2 here with proper name)
-*Add caption explaining what this shows*
+*  Give input about something you are already procrastinating about *
 
-![Screenshot3](Add screenshot 3 here with proper name)
-*Add caption explaining what this shows*
+![Screenshot2]
+<img width="1890" height="913" alt="Screenshot 2025-08-02 153641" src="https://github.com/user-attachments/assets/34f39522-06f5-4be3-9218-8ed21c66011b" />
 
-# Diagrams
-![Workflow](Add your workflow/architecture diagram here)
-*Add caption explaining your workflow*
+*Displays a useless productivity score and sets the website in dream mode for further slacking *
 
-For Hardware:
+![Screenshot3]
+<img width="1852" height="602" alt="Screenshot 2025-08-02 153953" src="https://github.com/user-attachments/assets/d1d73dd1-bd5b-4514-8576-2712e2f4fdb6" />
 
-# Schematic & Circuit
-![Circuit](Add your circuit diagram here)
-*Add caption explaining connections*
+*Random distraction generator *
 
-![Schematic](Add your schematic diagram here)
-*Add caption explaining the schematic*
+!(Screenshot4]
+![WhatsApp Image 2025-08-02 at 16 02 29_79925e3c](https://github.com/user-attachments/assets/82dd4b99-f565-449c-a4e1-cc9f965d0095)
 
-# Build Photos
-![Components](Add photo of your components here)
-*List out all components shown*
+* Snark generator *
 
-![Build](Add photos of build process here)
-*Explain the build steps*
+![Screenshot5]
+![IMG-20250802-WA0004](https://github.com/user-attachments/assets/c131bb50-d060-4af4-b0bd-d1d882c321b7)
 
-![Final](Add photo of final product here)
-*Explain the final build*
+* Different remarks for different inputs *
 
 ### Project Demo
 # Video
-[Add your demo video link here]
-*Explain what the video demonstrates*
-
-# Additional Demos
-[Add any extra demo materials/links]
+https://1drv.ms/v/c/a2ef1a5762079a7f/Eai5ry-SjfFDsX8U-n2zhfsBmZ6KQlc4x4Hp8RTK-RJh-A?e=P3IDgG
+* Workflow of ChatterWaste *
 
 ## Team Contributions
-- [Name 1]: [Specific contributions]
-- [Name 2]: [Specific contributions]
-- [Name 3]: [Specific contributions]
+- Archana: Snark Bot creation
+- Gayathri: Procastination planner creation
+
 
 ---
 Made with ❤️ at TinkerHub Useless Projects 
