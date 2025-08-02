@@ -34,27 +34,27 @@ For Software:
 -VS Code
 
 # Screenshots (Add at least 3)
-![Screenshot1]
+[ChatterWaste entry page]
 <img width="1912" height="705" alt="Screenshot 2025-08-02 153248" src="https://github.com/user-attachments/assets/7abb1f12-61aa-409d-8493-7342d8ccb70b" />
 
 *  Give input about something you are already procrastinating about *
 
-![Screenshot2]
+![Productivity score]
 <img width="1890" height="913" alt="Screenshot 2025-08-02 153641" src="https://github.com/user-attachments/assets/34f39522-06f5-4be3-9218-8ed21c66011b" />
 
 *Displays a useless productivity score and sets the website in dream mode for further slacking *
 
-![Screenshot3]
+![Distraction generator]
 <img width="1852" height="602" alt="Screenshot 2025-08-02 153953" src="https://github.com/user-attachments/assets/d1d73dd1-bd5b-4514-8576-2712e2f4fdb6" />
 
 *Random distraction generator *
 
-!(Screenshot4]
+!(Snark generator]
 ![WhatsApp Image 2025-08-02 at 16 02 29_79925e3c](https://github.com/user-attachments/assets/82dd4b99-f565-449c-a4e1-cc9f965d0095)
 
 * Snark generator *
 
-![Screenshot5]
+![Remarks]
 ![IMG-20250802-WA0004](https://github.com/user-attachments/assets/c131bb50-d060-4af4-b0bd-d1d882c321b7)
 
 * Different remarks for different inputs *
