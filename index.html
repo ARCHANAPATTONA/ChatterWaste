@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Snark Bot 🤖</title>
+  <style>
+    /* === BASIC PAGE STYLE === */
+    body {
+      font-family: 'Arial', sans-serif;
+      background: linear-gradient(135deg, #a8c0ff, #e6ffd5); /* Purple to yellow gradient */
+      color: #333;
+      margin: 0;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+    }
+
+    /* Title styling */
+    h2 {
+      margin-top: 20px;
+      color: #fff;
+      text-align: center;
+      text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.3);
+    }
+
+    /* Container holding chatbox and taskbox */
+    .main-container {
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      gap: 30px;
+      margin-top: 20px;
+      width: 90%;
+      max-width: 1200px;
+    }
+
+    /* === CHATBOX STYLE === */
+    .chatbox {
+      width: 700px;
+      height: 550px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      border: 2px solid #ddd;
+      border-radius: 15px;
+      padding: 15px;
+      background: rgba(255, 255, 255, 0.9);
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    /* Scrollable messages area */
+    .messages {
+      flex: 1;
+      overflow-y: auto;
+      padding: 10px;
+      background: #f9f9f9;
+      border-radius: 10px;
+      margin-bottom: 10px;
+    }
+    .messages::-webkit-scrollbar {
+      display: none;
+    }
+
+    /* Chat input area */
+    .input-container {
+      border-top: 1px solid #eee;
+      padding-top: 10px;
+      display: flex;
+      justify-content: center;
+    }
+
+    input {
+      width: 95%;
+      padding: 10px;
+      border-radius: 20px;
+      border: 1px solid #ddd;
+      outline: none;
+      font-size: 14px;
+      background: #fff;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    /* === TASKBOX STYLE (right side) === */
+    .taskbox {
+      width: 350px;
+      max-height: 750px;
+      overflow-y: auto;
+      border: 2px solid #ddd;
+      border-radius: 15px;
+      padding: 15px;
+      background: rgba(255, 255, 255, 0.9);
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      display: none;
+    }
+    .taskbox::-webkit-scrollbar {
+      display: none;
+    }
+
+    /* Individual task bubble */
+    .task {
+      background: #f0f0f0;
+      padding: 10px;
+      margin: 10px 0;
+      border-radius: 10px;
+      font-size: 14px;
+      color: #555;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    /* === CHAT MESSAGE STYLE === */
+    .message { margin: 5px 0; }
+    .bot { color: #2ecc71; }      /* Green for bot */
+    .user { color: #3498db; text-align: right; } /* Blue for user */
+
+    /* Sticker styling */
+    .message img {
+      max-width: 120px;
+      display: block;
+      margin-top: 5px;
+      border-radius: 10px;
+    }
+    /* Video styling */
+    .message video {
+      max-width: 200px;
+      margin-top: 5px;
+      border-radius: 10px;
+      display: block;
+      cursor: pointer;
+    }
+
+    /* === BUTTONS (Inspired by ChatterWaste) === */
+    .button-group {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 10px;
+    }
+
+    .btn {
+      padding: 10px 20px;
+      border: none;
+      border-radius: 20px;
+      font-size: 14px;
+      cursor: pointer;
+      transition: transform 0.2s, background 0.2s;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .btn:hover {
+      transform: scale(1.05);
+    }
+
+    .btn-vibe { background: #a3d8d3; color: #fff; }
+    .btn-delay { background: #e74c3c; color: #fff; }
+    .btn-motivate { background: #9b59b6; color: #fff; }
+    .btn-excuse { background: #f1c40f; color: #333; }
+    .btn-chaos { background: #e67e22; color: #fff; }
+    .btn-focus { background: #3498db; color: #fff; }
+  </style>
+</head>
+<body>
+  <h2>Snark Bot 🤖</h2>
+
+  <!-- Container with chatbox and taskbox -->
+  <div class="main-container">
+    <!-- Left Chatbox -->
+    <div class="chatbox">
+      <div class="messages" id="chatbox"></div>
+      <div class="input-container">
+        <input type="text" id="userInput" placeholder="Type something..." />
+      </div>
+    </div>
+
+    <!-- Right Taskbox (hidden until tasks are added) -->
+    <div class="taskbox" id="taskbox"><b>Scheduled Tasks:</b></div>
+  </div>
+
+  <script>
+    /* === GLOBAL VARIABLES === */
+    const chatbox = document.getElementById("chatbox");
+    const taskbox = document.getElementById("taskbox");
+    const userInput = document.getElementById("userInput");
+
+    let userName = null;
+    let taskCount = 0;
+
+    const stickers = ["pavi.png","mukesh.png","ayyo.png","2.png","1.png"];
+    const videos = ["okey.mp4"];
+
+    const greetings = ["hi","hello","hey","yo","hola","sup"];
+    const greetingReplies = [
+      "Hey there, lazy legend! 😎 Ready to not do your tasks?",
+      "Hello! I was hoping you'd come to avoid work 😏",
+      "Yo! Are we procrastinating today or every day?",
+      "Greetings! The universe told me you’re about to waste some time 🎉"
+    ];
+
+    const roastReplies = [
+      "Universe says: Chill… that task can wait 😏",
+      "Your future self just texted… they’ll handle it tomorrow.",
+      "Why rush? Laziness is an art, and you’re the Picasso 🎨",
+      "Deadline? More like *dead-line*, just ignore it 😂",
+      "Tasks are temporary, naps are eternal 😴",
+      "You’re about to be productive? Cute. Delay it!",
+      "Even Einstein said: ‘Time is relative.’ Delay it, bro.",
+      "Let’s just vibe and not do that."
+    ];
+
+    const lazyRoasts = [
+      "Lazy mode: ON ✅… and I support it 😏",
+      "If laziness were an Olympic sport, you'd get gold 🥇",
+      "Forget it now, remember it never 😎",
+      "Congrats! You're the CEO of Chilling 🏖",
+      "Your brain just said: 'Nope, let's sleep.' 😴"
+    ];
+
+    const malayalamDialogues = [
+      "ജബ ജബ ജബ ജബ! 🤣",
+      "നീ പോയി ഉറങ്ങ് മോനെ ദിനേശാ......",
+      "അടി സക്കെ......",
+    ];
+
+    /* === ADD MESSAGE TO CHATBOX === */
+    function addMessage(content, sender, isSticker = false, isVideo = false) {
+      const msg = document.createElement("div");
+      msg.classList.add("message", sender);
+
+      if (isSticker) {
+        const img = document.createElement("img");
+        img.src = content;
+        msg.appendChild(img);
+      } else if (isVideo) {
+        const vid = document.createElement("video");
+        vid.src = content;
+        vid.autoplay = true;
+        vid.loop = true;
+        vid.muted = true;
+        vid.playsInline = true;
+        vid.addEventListener("click", () => vid.muted = !vid.muted);
+        msg.appendChild(vid);
+      } else {
+        msg.textContent = content;
+      }
+
+      chatbox.appendChild(msg);
+      chatbox.scrollTop = chatbox.scrollHeight;
+    }
+
+    function personalize(reply) {
+      return userName ? reply.replace("Hey", `Hey ${userName}`) : reply;
+    }
+
+    function getRandomReply() {
+      const allReplies = [...roastReplies, ...lazyRoasts, ...malayalamDialogues];
+      return personalize(allReplies[Math.floor(Math.random() * allReplies.length)]);
+    }
+
+    function getBotReply(userText) {
+      const text = userText.toLowerCase();
+
+      if (text.startsWith("my name is ") || text.startsWith("i am ") || text.startsWith("call me ")) {
+        userName = userText.split(" ").pop();
+        return personalize("Nice to meet you! Now go take a nap 😴");
+      }
+
+      if (greetings.some(g => text.includes(g))) {
+        return personalize(greetingReplies[Math.floor(Math.random() * greetingReplies.length)]);
+      }
+
+      if (text.includes("lazy") || text.includes("forget") || text.includes("skip") || text.includes("can't") || text.includes("dont")) {
+        return personalize(lazyRoasts[Math.floor(Math.random() * lazyRoasts.length)]);
+      }
+
+      if (/(schedule|remind|task|write|finish|complete|submit|send|do)/.test(text)) {
+        const timePattern = /(\d{1,2}):(\d{2})\s?(am|pm)?/i;
+        if (!timePattern.test(userText)) {
+          return "Sure! But please enter time like '6:30 PM' ⏰";
+        }
+        scheduleTask(userText);
+        return personalize("Task scheduled! But let's be real... you'll ignore it 😆");
+      }
+
+      return getRandomReply();
+    }
+
+    function scheduleTask(userText) {
+      const match = userText.match(/(\d{1,2}):(\d{2})\s?(am|pm)?/i);
+      if (!match) return;
+
+      let hours = parseInt(match[1]);
+      const minutes = parseInt(match[2]);
+      const ampm = match[3]?.toLowerCase();
+
+      if (ampm === "pm" && hours < 12) hours += 12;
+      if (ampm === "am" && hours === 12) hours = 0;
+
+      const now = new Date();
+      const taskTime = new Date();
+      taskTime.setHours(hours, minutes, 0, 0);
+
+      if (taskTime < now) taskTime.setDate(taskTime.getDate() + 1);
+
+      const delay = taskTime - now;
+      const taskId = Date.now();
+      const timeStr = match[0].toUpperCase();
+
+      addTaskToBox(userText, timeStr, taskId);
+
+      setTimeout(() => {
+        addMessage("⏰ Reminder: " + getRandomReply(), "bot");
+        if (Math.random() < 0.5) {
+          addMessage(stickers[0], "bot", true);
+        } else {
+          addMessage(videos[0], "bot", false, true);
+        }
+        removeTaskFromBox(taskId);
+      }, delay);
+    }
+
+    function addTaskToBox(taskText, timeStr, id) {
+      if (taskCount === 0) taskbox.style.display = "block";
+      taskCount++;
+      const taskDiv = document.createElement("div");
+      taskDiv.classList.add("task");
+      taskDiv.id = `task-${id}`;
+      taskDiv.textContent = `${taskText} at ${timeStr}`;
+      taskbox.appendChild(taskDiv);
+    }
+
+    function removeTaskFromBox(id) {
+      const taskDiv = document.getElementById(`task-${id}`);
+      if (taskDiv) taskDiv.remove();
+      taskCount--;
+      if (taskCount === 0) taskbox.style.display = "none";
+    }
+
+    userInput.addEventListener("keypress", function(e) {
+      if (e.key === "Enter" && userInput.value.trim() !== "") {
+        const userText = userInput.value;
+        addMessage(userText, "user");
+        userInput.value = "";
+
+        setTimeout(() => {
+          const reply = getBotReply(userText);
+          if (reply) addMessage(reply, "bot");
+          const random = Math.random() < 0.6 ? "sticker" : "video";
+          if (random === "sticker") {
+            addMessage(stickers[0], "bot", true);
+          } else {
+            addMessage(videos[0], "bot", false, true);
+          }
+        }, 800);
+      }
+    });
+  </script>
+</body>
+</html>
